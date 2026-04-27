@@ -17,4 +17,6 @@ public interface RaceResultRepository {
 
     // Devolvemos una lista entera de los resultados
     List<RaceResult> findAll();
+
+    boolean existsByRaceIdAndFinalPositionAndStatus(long idRace, int finalPosition, RaceResult.Status status);
 }

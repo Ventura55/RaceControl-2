@@ -3,5 +3,5 @@ package org.control.racecontrol.domain.port.input;
 import org.control.racecontrol.domain.model.Race;
 
 public interface CreateRaceUseCase {
-    void execute(Race race);
+    void createRace(Race race);
 }

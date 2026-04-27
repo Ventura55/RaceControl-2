@@ -5,5 +5,5 @@ import org.control.racecontrol.domain.model.Driver;
 public interface CreateDriverUseCase {
     // Nos llaman desde afuera diciendo que tenemos que añadir un
     // piloto a un equipo
-    void execute(Driver driver);
+    void createDriver(Driver driver);
 }
