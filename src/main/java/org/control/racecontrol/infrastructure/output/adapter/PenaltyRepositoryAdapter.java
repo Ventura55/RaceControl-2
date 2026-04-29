@@ -1,0 +1,24 @@
+package org.control.racecontrol.infrastructure.output.adapter;
+
+import org.control.racecontrol.domain.model.Penalty;
+import org.control.racecontrol.domain.port.output.PenaltyRepository;
+import org.control.racecontrol.infrastructure.output.entity.PenaltyEntity;
+import org.control.racecontrol.infrastructure.output.mapper.PenaltyPersistenceMapper;
+import org.control.racecontrol.infrastructure.output.repository.DataPenaltyRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+@Component
+public class PenaltyRepositoryAdapter implements PenaltyRepository {
+    @Autowired
+    private DataPenaltyRepository repository;
+
+    @Autowired
+    private PenaltyPersistenceMapper mapper;
+
+    @Override
+    public void save(Penalty penalty) {
+        PenaltyEntity entity = mapper.toEntity(penalty);
+        repository.save(entity);
+    }
+}

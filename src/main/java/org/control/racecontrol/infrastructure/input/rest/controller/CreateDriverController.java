@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.control.racecontrol.application.CreateDriverService;
 import org.control.racecontrol.domain.model.Driver;
 import org.control.racecontrol.infrastructure.input.rest.dto.request.DriverRequestDto;
+import org.control.racecontrol.infrastructure.input.rest.mapper.DriverRestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,9 +19,14 @@ public class CreateDriverController {
     @Autowired
     private CreateDriverService driverService;
 
+    @Autowired
+    private DriverRestMapper driverRestMapper;
+
     @PostMapping
     public ResponseEntity<Driver> saveDriver(@RequestBody DriverRequestDto driver) {
-        driverService.createDriver(driver.);
+        Driver driverDomain = driverRestMapper.toDomain(driver);
+
+        driverService.createDriver(driverDomain);
         return ResponseEntity.ok().build();
     }
 }
