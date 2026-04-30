@@ -5,5 +5,5 @@ import org.control.racecontrol.domain.model.RaceResult;
 import java.util.List;
 
 public interface GetRaceResultUseCase {
-    List<RaceResult> getAll();
+    List<RaceResult> getAll(long idRace);
 }

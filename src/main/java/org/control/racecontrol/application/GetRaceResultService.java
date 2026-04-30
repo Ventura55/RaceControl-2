@@ -18,9 +18,9 @@ public class GetRaceResultService  implements GetRaceResultUseCase {
     }
 
     @Override
-    public List<RaceResult> getAll() {
+    public List<RaceResult> getAll(long idRace) {
         log.info("Obtenemos todos los resultados de la carrera");
-        List<RaceResult> results = resultRepository.findAll();
+        List<RaceResult> results = resultRepository.findAll(idRace);
 
         log.debug("Calculamos los puntos de cada jugador en la carrera");
         for (RaceResult result : results) {

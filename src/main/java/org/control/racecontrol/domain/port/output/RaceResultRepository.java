@@ -16,7 +16,7 @@ public interface RaceResultRepository {
     Optional<RaceResult> findByIdDriver(int idDriver);
 
     // Devolvemos una lista entera de los resultados
-    List<RaceResult> findAll();
+    List<RaceResult> findAll(long idRace);
 
     boolean existsByRaceIdAndFinalPositionAndStatus(long idRace, int finalPosition, RaceResult.Status status);
 }
