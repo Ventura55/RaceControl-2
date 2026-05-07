@@ -9,10 +9,10 @@ import java.util.UUID;
 @Component
 public class RaceResultRestMapper {
 
-    public RaceResult toDomain(RaceResultRequestDto dto) {
+    public RaceResult toDomain(Long raceId, RaceResultRequestDto dto) {
         if (dto == null) return null;
 
-        RaceResult result = new RaceResult(0L, dto.getIdRace(), dto.getIdDriver(), dto.getGridPosition(), dto.getFinalPosition(), dto.isFastestLap(), 0, dto.getStatus());
+        RaceResult result = new RaceResult(null, raceId, dto.getDriverNumber(), dto.getGridPosition(), dto.getFinalPosition(), dto.isFastestLap(), 0, dto.getStatus());
         return result;
     }
 }

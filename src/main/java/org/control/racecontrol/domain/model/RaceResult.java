@@ -1,7 +1,7 @@
 package org.control.racecontrol.domain.model;
 
 public class RaceResult {
-    private long id;
+    private Long id;
     private long idRace;
     private int idDriver;
     private int gridPosition;
@@ -10,11 +10,15 @@ public class RaceResult {
     private int points;
     private Status status;
 
+    public RaceResult() {
+
+    }
+
     public enum Status {
         FINISHED, DNF, DSQ
     }
 
-    public RaceResult(long id, long idRace, int idDriver, int gridPosition, int finalPosition, boolean fastestLap, int points, Status status) {
+    public RaceResult(Long id, long idRace, int idDriver, int gridPosition, int finalPosition, boolean fastestLap, int points, Status status) {
         this.id = id;
         this.idRace = idRace;
         this.idDriver = idDriver;
@@ -25,11 +29,11 @@ public class RaceResult {
         this.status = status;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

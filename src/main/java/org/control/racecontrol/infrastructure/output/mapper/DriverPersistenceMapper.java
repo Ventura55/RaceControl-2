@@ -10,9 +10,18 @@ public class DriverPersistenceMapper {
         if (domain == null) return null;
 
         DriverEntity entity = new DriverEntity();
-        entity.setId(domain.getId());
         entity.setName(domain.getName());
         entity.setIdTeam(domain.getIdTeam());
         return entity;
+    }
+
+    public Driver toDomain(DriverEntity entity) {
+        if (entity == null) return null;
+
+        Driver domain = new Driver();
+        domain.setId(entity.getId());
+        domain.setName(entity.getName());
+        domain.setIdTeam(entity.getIdTeam());
+        return domain;
     }
 }

@@ -6,10 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PenaltyRestMapper {
-    public Penalty toDomain(PenaltyRequestDto dto) {
+    public Penalty toDomain(Long raceId, Integer driverNumber, PenaltyRequestDto dto) {
         if (dto == null) return null;
 
-        Penalty penalty = new Penalty(dto.getId(), dto.getIdRaceResult(), dto.getPentaltySeconds(), dto.getReason());
-        return penalty;
+        return new Penalty(0L, 0L, dto.getPenaltySeconds(), dto.getReason());
     }
 }

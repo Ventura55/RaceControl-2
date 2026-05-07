@@ -6,10 +6,7 @@ import org.control.racecontrol.infrastructure.input.rest.dto.request.PenaltyRequ
 import org.control.racecontrol.infrastructure.input.rest.mapper.PenaltyRestMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/penalty")
@@ -20,11 +17,11 @@ public class CreatePenaltyController {
     @Autowired
     private PenaltyRestMapper mapper;
 
-    @PostMapping
-    public ResponseEntity<Penalty> createPenalty(@RequestBody PenaltyRequestDto dto) {
-        Penalty penaltyDomain = mapper.toDomain(dto);
+    @PostMapping("/{raceId}/results/{driverNumber}/penalties")
+    public ResponseEntity<Penalty> createPenalty(@PathVariable Long raceId, @PathVariable Integer driverNumber, @RequestBody PenaltyRequestDto dto) {
+        Penalty penaltyDomain = mapper.toDomain(raceId, driverNumber, dto);
 
-        penaltyService.createPenalty(penaltyDomain);
+        penaltyService.createPenalty(raceId, driverNumber, penaltyDomain);
         return ResponseEntity.ok().build();
     }
 }

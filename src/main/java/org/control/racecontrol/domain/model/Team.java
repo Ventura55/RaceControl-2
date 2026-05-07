@@ -6,10 +6,14 @@ public class Team {
     private String name;
     private String engineSupplier;
 
-    public Team(long id, String name, String engineSupplier) {
+    public Team(String name, String engineSupplier) {
         this.id = id;
         this.name = name;
         this.engineSupplier = engineSupplier;
+    }
+
+    public Team() {
+
     }
 
     public long getId() {

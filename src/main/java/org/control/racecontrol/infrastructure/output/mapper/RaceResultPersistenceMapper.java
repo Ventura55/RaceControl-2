@@ -19,4 +19,18 @@ public class RaceResultPersistenceMapper {
         entity.setStatus(result.getStatus());
         return entity;
     }
+
+    public RaceResult toDomain(RaceResultEntity entity) {
+        if (entity == null) return null;
+        return new RaceResult(
+                entity.getId(),
+                entity.getIdRace(),
+                entity.getIdDriver(),
+                entity.getGridPosition(),
+                entity.getFinalPosition(),
+                entity.getFastestLap(),
+                0,
+                entity.getStatus()
+        );
+    }
 }

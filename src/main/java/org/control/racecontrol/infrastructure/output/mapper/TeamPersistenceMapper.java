@@ -10,9 +10,18 @@ public class TeamPersistenceMapper {
         if (team == null) return null;
 
         TeamEntity entity = new TeamEntity();
-        entity.setId(team.getId());
         entity.setName(team.getName());
         entity.setEngineSupplier(team.getEngineSupplier());
         return entity;
+    }
+
+    public Team toDomain(TeamEntity entity) {
+        if (entity == null) return null;
+
+        Team domain = new Team();
+        domain.setId(entity.getId());
+        domain.setName(entity.getName());
+        domain.setEngineSupplier(entity.getEngineSupplier());
+        return domain;
     }
 }

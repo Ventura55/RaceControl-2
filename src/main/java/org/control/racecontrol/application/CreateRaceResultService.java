@@ -27,7 +27,7 @@ public class CreateRaceResultService implements CreateRaceResultUseCase {
 
         if (result.getStatus() == RaceResult.Status.FINISHED) {
             // posicion final tiene que estar entre 1 y 20\
-            if (result.getFinalPosition() > 1 || result.getFinalPosition() < 20) {
+            if (result.getFinalPosition() < 1 || result.getFinalPosition() > 20) {
                 log.warn("No se ha podido completar, la posicion final tiene que ser entre 1 y 20");
                 throw new IllegalArgumentException("La posicion final tiene que ser entre 1 y 20");
             }

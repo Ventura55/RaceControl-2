@@ -1,13 +1,11 @@
 package org.control.racecontrol.domain.model;
 
-import lombok.Data;
-
 public class Race {
     private long id;
     private String name;
     private int totalLaps;
 
-    public Race(long id, String name, int totalLaps) {
+    public Race(String name, int totalLaps) {
         this.id = id;
         this.name = name;
         this.totalLaps = totalLaps;

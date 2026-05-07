@@ -7,7 +7,6 @@ import lombok.Data;
 @Data
 public class RaceRequestDto {
     @NotNull
-    private Long id;
     private String name;
 
     @Min(1)

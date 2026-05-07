@@ -9,7 +9,7 @@ public class TeamRestMapper {
     public Team toDomain(TeamRequestDto dto) {
         if (dto == null) return null;
 
-        Team teamDomain = new Team(dto.getId(), dto.getName(), dto.getEngineSupplier());
+        Team teamDomain = new Team(dto.getName(), dto.getEngineSupplier());
         return teamDomain;
     }
 }

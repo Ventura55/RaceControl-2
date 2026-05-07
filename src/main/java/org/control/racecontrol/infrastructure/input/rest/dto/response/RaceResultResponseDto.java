@@ -16,9 +16,9 @@ public class RaceResultResponseDto {
     @Positive
     private Integer idDriver;
 
-    private String nameDriver;
-    private String nameTeam;
+    private String driverName;
+    private String teamName;
 
     @Min(0)
-    private Integer points;
+    private Integer totalPoints;
 }

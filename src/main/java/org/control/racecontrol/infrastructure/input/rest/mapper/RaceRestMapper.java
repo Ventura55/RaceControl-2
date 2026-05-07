@@ -9,7 +9,7 @@ public class RaceRestMapper {
     public Race toDomain(RaceRequestDto dto) {
         if (dto == null) return null;
 
-        Race race = new Race(dto.getId(), dto.getName(), dto.getTotalLaps());
+        Race race = new Race(dto.getName(), dto.getTotalLaps());
         return race;
     }
 }

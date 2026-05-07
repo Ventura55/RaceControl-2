@@ -12,6 +12,7 @@ import lombok.*;
 public class DriverEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "dri_id")
     private int id;
 
     @Column(name = "dri_name")

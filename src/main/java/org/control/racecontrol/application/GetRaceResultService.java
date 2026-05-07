@@ -1,12 +1,15 @@
 package org.control.racecontrol.application;
 
 import org.control.racecontrol.domain.model.RaceResult;
+import org.control.racecontrol.domain.model.RaceResultResponse;
 import org.control.racecontrol.domain.port.input.GetRaceResultUseCase;
 import org.control.racecontrol.domain.port.output.RaceResultRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GetRaceResultService  implements GetRaceResultUseCase {
     private static final Logger log = LoggerFactory.getLogger(GetRaceResultService.class);
@@ -18,17 +21,36 @@ public class GetRaceResultService  implements GetRaceResultUseCase {
     }
 
     @Override
-    public List<RaceResult> getAll(long idRace) {
-        log.info("Obtenemos todos los resultados de la carrera");
-        List<RaceResult> results = resultRepository.findAll(idRace);
+    public List<RaceResultResponse> getAll() {
+        log.info("Obteniendo resultados completos para la clasificación");
+        List<RaceResultResponse> allResults = resultRepository.findAllWithDriverAndTeam();
 
-        log.debug("Calculamos los puntos de cada jugador en la carrera");
-        for (RaceResult result : results) {
-            int calculatedPoints = calculatePoints(result);
-            result.setPoints(calculatedPoints);
+        Map<Integer, RaceResultResponse> standingsMap = new HashMap<>();
+
+        for (RaceResultResponse response : allResults) {
+            int points = calculatePoints(response.getRaceResult());
+            int driverId = response.getRaceResult().getIdDriver();
+
+            if (standingsMap.containsKey(driverId)) {
+                RaceResult existingResult = standingsMap.get(driverId).getRaceResult();
+                existingResult.setPoints(existingResult.getPoints() + points);
+            } else {
+                RaceResult aggregatedResult = new RaceResult();
+                aggregatedResult.setIdDriver(driverId);
+                aggregatedResult.setPoints(points);
+
+                standingsMap.put(driverId, new RaceResultResponse(
+                        aggregatedResult,
+                        response.getDriver(),
+                        response.getTeam()
+                ));
+            }
         }
 
-        return results;
+        log.info("Ordenando la clasificación por puntos de mayor a menor");
+        return standingsMap.values().stream()
+                .sorted((r1, r2) -> Integer.compare(r2.getRaceResult().getPoints(), r1.getRaceResult().getPoints()))
+                .toList();
     }
 
     // Calculamos los puntos del piloto al vuelo no en la bd
@@ -66,5 +88,4 @@ public class GetRaceResultService  implements GetRaceResultUseCase {
         log.info("Se devuelve los puntos calculados");
         return points;
     }
-
 }

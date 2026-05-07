@@ -2,6 +2,7 @@ package org.control.racecontrol.infrastructure.input.rest.controller;
 
 import org.control.racecontrol.application.GetRaceResultService;
 import org.control.racecontrol.domain.model.RaceResult;
+import org.control.racecontrol.domain.model.RaceResultResponse;
 import org.control.racecontrol.infrastructure.input.rest.dto.response.RaceResultResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,11 +18,17 @@ public class GetRaceResultController {
     @Autowired
     private GetRaceResultService raceResultService;
 
-    @GetMapping
+    @GetMapping("/drivers")
     public ResponseEntity<List<RaceResultResponseDto>> listRaceResult() {
-        List<RaceResult> results = raceResultService.getAll();
-        List<RaceResultResponseDto> dtos = results.stream().map(result -> new RaceResultResponseDto(
-                result.getIdDriver(),
-        ));
+        List<RaceResultResponse> standings = raceResultService.getAll();
+
+        List<RaceResultResponseDto> dtos = standings.stream().map(response -> new RaceResultResponseDto(
+                response.getRaceResult().getIdDriver(),
+                response.getDriver().getName(),
+                response.getTeam().getName(),
+                response.getRaceResult().getPoints()
+        )).toList();
+
+        return ResponseEntity.ok(dtos);
     }
 }

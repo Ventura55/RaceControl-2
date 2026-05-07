@@ -5,10 +5,14 @@ public class Driver {
     private String name;
     private long idTeam;
 
-    public Driver(int id, String name, long idTeam) {
+    public Driver(String name, long idTeam) {
         this.id = id;
         this.name = name;
         this.idTeam = idTeam;
+    }
+
+    public Driver() {
+
     }
 
     public int getId() {

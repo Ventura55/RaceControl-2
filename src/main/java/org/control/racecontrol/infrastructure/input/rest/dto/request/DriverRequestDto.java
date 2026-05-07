@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class DriverRequestDto {
     @NotNull
-    private Integer id;
-
     private String name;
 
     @NotNull

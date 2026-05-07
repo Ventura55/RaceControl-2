@@ -9,11 +9,7 @@ import org.control.racecontrol.domain.model.RaceResult;
 public class RaceResultRequestDto {
     @NotNull
     @Positive
-    private Integer idRace;
-
-    @NotNull
-    @Positive
-    private Integer idDriver;
+    private Integer driverNumber;
 
     @Positive
     private Integer gridPosition;

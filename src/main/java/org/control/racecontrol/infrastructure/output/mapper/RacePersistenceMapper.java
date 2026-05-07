@@ -10,7 +10,6 @@ public class RacePersistenceMapper {
         if (race == null) return null;
 
         RaceEntity entity = new RaceEntity();
-        entity.setId(race.getId());
         entity.setName(race.getName());
         entity.setTotalLaps(race.getTotalLaps());
         return entity;
