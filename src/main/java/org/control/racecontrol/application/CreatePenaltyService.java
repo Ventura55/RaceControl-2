@@ -4,6 +4,7 @@ import org.control.racecontrol.domain.model.Penalty;
 import org.control.racecontrol.domain.model.RaceResult;
 import org.control.racecontrol.domain.port.input.CreatePenaltyUseCase;
 import org.control.racecontrol.domain.port.output.PenaltyRepository;
+import org.control.racecontrol.domain.port.output.RaceEventPublisher;
 import org.control.racecontrol.domain.port.output.RaceResultRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,10 +16,12 @@ public class CreatePenaltyService implements CreatePenaltyUseCase {
 
     private PenaltyRepository penaltyRepository;
     private final RaceResultRepository raceResultRepository;
+    private final RaceEventPublisher eventPublisher;
 
-    public CreatePenaltyService (PenaltyRepository penaltyRepository, RaceResultRepository raceResultRepository) {
+    public CreatePenaltyService (PenaltyRepository penaltyRepository, RaceResultRepository raceResultRepository, RaceEventPublisher eventPublisher) {
         this.penaltyRepository = penaltyRepository;
         this.raceResultRepository = raceResultRepository;
+        this.eventPublisher = eventPublisher;
     }
 
     public void createPenalty(Long raceId, Integer driverNumber, Penalty penalty) {
@@ -35,6 +38,7 @@ public class CreatePenaltyService implements CreatePenaltyUseCase {
             penalty.setIdRaceResult(result.get().getId());
 
             penaltyRepository.save(penalty);
+            eventPublisher.publishPenaltyAppliedEvent(penalty);
             log.info("La falta se ha creado correctamente vinculada al resultado ID: {}", penalty.getIdRaceResult());
         } catch (Exception e) {
             log.error("Error: No se ha podido guardar la penalización en la BD", e);
@@ -49,6 +53,7 @@ public class CreatePenaltyService implements CreatePenaltyUseCase {
 
         try {
             penaltyRepository.save(penalty);
+            eventPublisher.publishPenaltyAppliedEvent(penalty);
             log.info("La falta se ha creado correctamente");
         } catch (Exception e) {
             log.error("Error no se ha podido crear correctamente en la bd");

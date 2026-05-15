@@ -15,8 +15,8 @@ public class ConfigurationService {
     }
 
     @Bean
-    public CreatePenaltyService createPenaltyService(PenaltyRepository penaltyRepository, RaceResultRepository raceResultRepository) {
-        return new CreatePenaltyService(penaltyRepository, raceResultRepository);
+    public CreatePenaltyService createPenaltyService(PenaltyRepository penaltyRepository, RaceResultRepository raceResultRepository, RaceEventPublisher raceEventPublisher) {
+        return new CreatePenaltyService(penaltyRepository, raceResultRepository, raceEventPublisher);
     }
 
     @Bean

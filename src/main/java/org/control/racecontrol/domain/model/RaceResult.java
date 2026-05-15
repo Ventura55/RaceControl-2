@@ -4,7 +4,7 @@ public class RaceResult {
     private Long id;
     private long idRace;
     private int idDriver;
-    private int gridPosition;
+    private Integer gridPosition;
     private int finalPosition;
     private boolean fastestLap;
     private int points;
@@ -18,7 +18,7 @@ public class RaceResult {
         FINISHED, DNF, DSQ
     }
 
-    public RaceResult(Long id, long idRace, int idDriver, int gridPosition, int finalPosition, boolean fastestLap, int points, Status status) {
+    public RaceResult(Long id, long idRace, int idDriver, Integer gridPosition, int finalPosition, boolean fastestLap, int points, Status status) {
         this.id = id;
         this.idRace = idRace;
         this.idDriver = idDriver;
@@ -53,11 +53,11 @@ public class RaceResult {
         this.idDriver = idDriver;
     }
 
-    public int getGridPosition() {
+    public Integer getGridPosition() {
         return gridPosition;
     }
 
-    public void setGridPosition(int gridPosition) {
+    public void setGridPosition(Integer gridPosition) {
         this.gridPosition = gridPosition;
     }
 
