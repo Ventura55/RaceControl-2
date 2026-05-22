@@ -14,4 +14,15 @@ public class RacePersistenceMapper {
         entity.setTotalLaps(race.getTotalLaps());
         return entity;
     }
+
+    public Race toDomain(RaceEntity entity) {
+        if (entity == null) return null;
+
+        Race race = new Race();
+        race.setId(entity.getId());
+        race.setName(entity.getName());
+        race.setTotalLaps(entity.getTotalLaps());
+
+        return race;
+    }
 }

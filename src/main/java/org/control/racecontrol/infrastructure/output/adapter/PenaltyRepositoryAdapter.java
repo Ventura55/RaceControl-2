@@ -8,6 +8,8 @@ import org.control.racecontrol.infrastructure.output.repository.DataPenaltyRepos
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class PenaltyRepositoryAdapter implements PenaltyRepository {
     @Autowired
@@ -20,5 +22,11 @@ public class PenaltyRepositoryAdapter implements PenaltyRepository {
     public void save(Penalty penalty) {
         PenaltyEntity entity = mapper.toEntity(penalty);
         repository.save(entity);
+    }
+
+    @Override
+    public List<Penalty> findByRaceId(Long raceId) {
+        List<PenaltyEntity> entities = repository.findByRaceId(raceId);
+        return entities.stream().map(entity -> mapper.toDomain(entity)).toList();
     }
 }

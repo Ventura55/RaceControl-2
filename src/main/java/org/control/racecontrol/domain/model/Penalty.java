@@ -13,6 +13,10 @@ public class Penalty {
         this.reason = reason;
     }
 
+    public Penalty() {
+
+    }
+
     public long getId() {
         return id;
     }

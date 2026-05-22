@@ -8,6 +8,8 @@ import org.control.racecontrol.infrastructure.output.repository.DataRaceReposito
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class RaceRepositoryAdapter implements RaceRepository {
     @Autowired
@@ -20,5 +22,10 @@ public class RaceRepositoryAdapter implements RaceRepository {
     public void save(Race race) {
         RaceEntity entity = mapper.toEntity(race);
         repository.save(entity);
+    }
+
+    @Override
+    public Optional<Race> findById(Long id) {
+        return repository.findById(id).map(entity -> mapper.toDomain(entity));
     }
 }

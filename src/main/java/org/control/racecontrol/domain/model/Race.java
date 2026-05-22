@@ -11,6 +11,10 @@ public class Race {
         this.totalLaps = totalLaps;
     }
 
+    public Race() {
+
+    }
+
     public long getId() {
         return id;
     }

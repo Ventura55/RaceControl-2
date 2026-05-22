@@ -16,4 +16,16 @@ public class PenaltyPersistenceMapper {
         entity.setReason(penalty.getReason());
         return entity;
     }
+
+    public Penalty toDomain(PenaltyEntity entity) {
+        if (entity == null) return null;
+
+        Penalty penalty = new Penalty();
+        penalty.setId(entity.getId());
+        penalty.setIdRaceResult(entity.getIdRaceResult());
+        penalty.setPentaltySeconds(entity.getSeconds());
+        penalty.setReason(entity.getReason());
+
+        return penalty;
+    }
 }
