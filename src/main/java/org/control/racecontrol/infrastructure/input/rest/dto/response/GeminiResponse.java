@@ -17,6 +17,7 @@ public class GeminiResponse {
 
     public static class Candidate {
         private Content content;
+        private String finishReason;
 
         public Candidate() {}
 
@@ -26,6 +27,14 @@ public class GeminiResponse {
 
         public void setContent(Content content) {
             this.content = content;
+        }
+
+        public String getFinishReason() {
+            return finishReason;
+        }
+
+        public void setFinishReason(String finishReason) {
+            this.finishReason = finishReason;
         }
     }
 

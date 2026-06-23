@@ -9,7 +9,9 @@ public class DriverRestMapper {
     public Driver toDomain(DriverRequestDto dto) {
         if (dto == null) return null;
 
-        Driver driver = new Driver(dto.getName(), dto.getIdTeam());
+        Driver driver = new Driver();
+        driver.setName(dto.getName());
+        driver.setIdTeam(dto.getIdTeam());
 
         return driver;
     }

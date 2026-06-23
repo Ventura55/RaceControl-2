@@ -1,14 +1,14 @@
 package org.control.racecontrol.application;
 
+import org.control.racecontrol.domain.model.AiAuditLog;
 import org.control.racecontrol.domain.model.Race;
 import org.control.racecontrol.domain.model.RaceDataSnapshot;
 import org.control.racecontrol.domain.model.RaceResult;
-import org.control.racecontrol.domain.port.output.PenaltyRepository;
-import org.control.racecontrol.domain.port.output.RaceReportGenerator;
-import org.control.racecontrol.domain.port.output.RaceRepository;
-import org.control.racecontrol.domain.port.output.RaceResultRepository;
+import org.control.racecontrol.domain.port.output.*;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -18,26 +18,49 @@ public class GenerateRaceInsightsService {
     private final RaceRepository raceRepository;
     private final RaceResultRepository resultRepository;
     private final PenaltyRepository penaltyRepository;
+    private final AiAuditRepository auditRepository;
 
-    public GenerateRaceInsightsService(RaceReportGenerator reportGenerator, RaceRepository raceRepository, RaceResultRepository resultRepository, PenaltyRepository penaltyRepository) {
+    public GenerateRaceInsightsService(RaceReportGenerator reportGenerator, RaceRepository raceRepository, RaceResultRepository resultRepository, PenaltyRepository penaltyRepository, AiAuditRepository auditRepository) {
         this.reportGenerator = reportGenerator;
         this.raceRepository = raceRepository;
         this.resultRepository = resultRepository;
         this.penaltyRepository = penaltyRepository;
+        this.auditRepository = auditRepository;
     }
 
     public String execute(Long raceId) {
-        Race race = raceRepository.findById(raceId).orElseThrow(() -> new IllegalArgumentException("La carrera no funciona con la ID: " + raceId));
+        long startTime = System.currentTimeMillis();
+        String username = SecurityContextHolder.getContext().getAuthentication() != null
+                ? SecurityContextHolder.getContext().getAuthentication().getName()
+                : "usuario_sistema";
 
-        List<String> podium = resultRepository.findAll(raceId).stream().sorted()
+        // Preparamos los datos
+        Race race = raceRepository.findById(raceId).orElseThrow();
+        List<String> podium = resultRepository.findAll(raceId).stream()
                 .sorted(Comparator.comparingInt(RaceResult::getFinalPosition))
                 .limit(3).map(result -> String.valueOf(result.getIdDriver())).toList();
-
         List<String> penalties = penaltyRepository.findByRaceId(raceId).stream()
                 .map(penalty -> "Sancion al coche " + penalty.getId() + " por " + penalty.getReason()).toList();
 
         RaceDataSnapshot snapshot = new RaceDataSnapshot(race.getName(), podium, penalties);
 
-        return reportGenerator.generateRaceSummary(snapshot);
+        try {
+            // Intentamos generar el reporte
+            String report = reportGenerator.generateRaceSummary(snapshot);
+
+            long durationMs = System.currentTimeMillis() - startTime;
+            auditRepository.save(new AiAuditLog(raceId, username, LocalDateTime.now(), durationMs, "SUCCESS"));
+
+            return report;
+
+        } catch (Exception e) {
+            System.err.println("🚨 ERROR REAL DETECTADO: " + e.getMessage());
+            e.printStackTrace(); // Esto nos dará la pista definitiva
+
+            long durationMs = System.currentTimeMillis() - startTime;
+            auditRepository.save(new AiAuditLog(raceId, username, LocalDateTime.now(), durationMs, "ERROR_DESCONOCIDO"));
+
+            throw new RuntimeException("Falló la IA. Motivo real: " + e.getMessage(), e);
+        }
     }
 }

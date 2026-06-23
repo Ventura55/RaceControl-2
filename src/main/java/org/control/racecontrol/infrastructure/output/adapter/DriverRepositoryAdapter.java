@@ -8,6 +8,8 @@ import org.control.racecontrol.infrastructure.output.repository.DataDriverReposi
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class DriverRepositoryAdapter implements DriverRepository {
     @Autowired
@@ -19,6 +21,11 @@ public class DriverRepositoryAdapter implements DriverRepository {
     @Override
     public long countDriversByIdTeam(long idTeam) {
         return repository.countByIdTeam(idTeam);
+    }
+
+    @Override
+    public Optional<Driver> findById(long driverId) {
+        return repository.findById((int) driverId).map(driverEntity -> mapper.toDomain(driverEntity));
     }
 
     @Override

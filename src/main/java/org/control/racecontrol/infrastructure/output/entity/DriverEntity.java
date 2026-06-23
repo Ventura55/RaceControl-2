@@ -20,4 +20,8 @@ public class DriverEntity {
 
     @Column(name = "tea_id")
     private long idTeam;
+
+    // Añade esto a tus otros campos en DriverEntity
+    @Column(precision = 15, scale = 2)
+    private java.math.BigDecimal marketValue;
 }

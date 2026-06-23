@@ -7,5 +7,7 @@ import java.util.List;
 public interface PenaltyRepository {
     void save(Penalty penalty);
 
+    long countByRaceResultId(long raceResultId);
+
     List<Penalty> findByRaceId(Long raceId);
 }

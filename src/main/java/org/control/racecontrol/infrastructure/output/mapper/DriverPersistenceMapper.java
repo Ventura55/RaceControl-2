@@ -12,6 +12,7 @@ public class DriverPersistenceMapper {
         DriverEntity entity = new DriverEntity();
         entity.setName(domain.getName());
         entity.setIdTeam(domain.getIdTeam());
+        entity.setMarketValue(domain.getMarketValue());
         return entity;
     }
 
@@ -22,6 +23,7 @@ public class DriverPersistenceMapper {
         domain.setId(entity.getId());
         domain.setName(entity.getName());
         domain.setIdTeam(entity.getIdTeam());
+        domain.setMarketValue(entity.getMarketValue());
         return domain;
     }
 }

@@ -34,19 +34,37 @@ public class GeminiRaceReportAdapter implements RaceReportGenerator {
     public String generateRaceSummary(RaceDataSnapshot data) {
         String prompt = buildPrompt(data);
 
+        List<GeminiRequest.SafetySetting> safetySettings = List.of(
+                new GeminiRequest.SafetySetting("HARM_CATEGORY_HATE_SPEECH", "BLOCK_NONE"),
+                new GeminiRequest.SafetySetting("HARM_CATEGORY_HARASSMENT", "BLOCK_NONE"),
+                new GeminiRequest.SafetySetting("HARM_CATEGORY_DANGEROUS_CONTENT", "BLOCK_NONE"),
+                new GeminiRequest.SafetySetting("HARM_CATEGORY_SEXUALLY_EXPLICIT", "BLOCK_NONE")
+        );
+
         GeminiRequest requestBody = new GeminiRequest(
-                List.of(new GeminiRequest.Content(
-                        List.of(new GeminiRequest.Part(prompt))
-                ))
+                List.of(new GeminiRequest.Content(List.of(new GeminiRequest.Part(prompt)))), safetySettings
         );
 
         java.net.URI uri = java.net.URI.create(apiUrl + "?key=" + apiKey);
 
         GeminiResponse response = restClient.post()
                 .uri(uri)
+                // 🚨 ¡ESTA LÍNEA ES LA QUE SALVARÁ EL PROYECTO! 🚨
+                .contentType(org.springframework.http.MediaType.APPLICATION_JSON)
                 .body(requestBody)
                 .retrieve()
                 .body(GeminiResponse.class);
+
+        // Si la razón de finalización es "SAFETY", lanzamos la excepción
+        if (response != null && response.getCandidates() != null && !response.getCandidates().isEmpty()) {
+            String finishReason = response.getCandidates().get(0).getFinishReason();
+
+            if ("SAFETY".equals(finishReason)) {
+                System.err.println("🚨 [ALERTA CRÍTICA] Generación bloqueada por los filtros de seguridad de Gemini.");
+                // Lo ideal sería que esto fuera tu SafetyPolicyViolationException
+                throw new RuntimeException("Contenido bloqueado por violación de políticas de seguridad.");
+            }
+        }
 
         return extractTextFromResponse(response);
     }

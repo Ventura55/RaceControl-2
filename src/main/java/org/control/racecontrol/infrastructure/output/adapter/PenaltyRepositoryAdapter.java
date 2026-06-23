@@ -25,6 +25,11 @@ public class PenaltyRepositoryAdapter implements PenaltyRepository {
     }
 
     @Override
+    public long countByRaceResultId(long raceResultId) {
+        return 0;
+    }
+
+    @Override
     public List<Penalty> findByRaceId(Long raceId) {
         List<PenaltyEntity> entities = repository.findByRaceId(raceId);
         return entities.stream().map(entity -> mapper.toDomain(entity)).toList();

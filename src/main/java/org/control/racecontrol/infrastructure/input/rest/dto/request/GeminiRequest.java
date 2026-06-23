@@ -5,10 +5,17 @@ import java.util.List;
 public class GeminiRequest {
     private List<Content> contents;
 
+    private List<SafetySetting> safetySettings;
+
     public GeminiRequest() {}
 
     public GeminiRequest(List<Content> contents) {
         this.contents = contents;
+    }
+
+    public GeminiRequest(List<Content> contents, List<SafetySetting> safetySettings) {
+        this.contents = contents;
+        this.safetySettings = safetySettings;
     }
 
     public List<Content> getContents() {
@@ -52,6 +59,34 @@ public class GeminiRequest {
 
         public void setText(String text) {
             this.text = text;
+        }
+    }
+
+    public static class SafetySetting {
+        private String category;
+        private String threshold;
+
+        public SafetySetting() {}
+
+        public SafetySetting(String category, String threshold) {
+            this.category = category;
+            this.threshold = threshold;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public String getThreshold() {
+            return threshold;
+        }
+
+        public void setThreshold(String threshold) {
+            this.threshold = threshold;
         }
     }
 }

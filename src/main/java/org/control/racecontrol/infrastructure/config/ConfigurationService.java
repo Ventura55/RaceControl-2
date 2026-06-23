@@ -38,4 +38,20 @@ public class ConfigurationService {
     public GetRaceResultService getRaceResultService(RaceResultRepository resultRepository) {
         return new GetRaceResultService(resultRepository);
     }
+
+    @Bean
+    public UpdateMarketValueService updateMarketValueService(
+            RaceResultRepository raceResultRepository,
+            PenaltyRepository penaltyRepository,
+            DriverRepository driverRepository) {
+        return new UpdateMarketValueService(raceResultRepository, penaltyRepository, driverRepository);
+    }
+
+    @Bean
+    public BuyDriverService buyDriverService(
+            UserWalletRepository userWalletRepository,
+            FantasyRosterRepository fantasyRosterRepository,
+            DriverRepository driverRepository) {
+        return new BuyDriverService(userWalletRepository, fantasyRosterRepository, driverRepository);
+    }
 }
