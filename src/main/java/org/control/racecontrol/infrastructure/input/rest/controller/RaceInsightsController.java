@@ -1,6 +1,7 @@
 package org.control.racecontrol.infrastructure.input.rest.controller;
 
 import org.control.racecontrol.application.GenerateRaceInsightsService;
+import org.control.racecontrol.domain.port.input.GenerateRaceInsightsUseCase;
 import org.control.racecontrol.infrastructure.input.rest.dto.response.RaceInsightResponseDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +12,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/races")
 public class RaceInsightsController {
-    private final GenerateRaceInsightsService generateRaceInsightsService;
+    private final GenerateRaceInsightsUseCase generateRaceInsightsUseCase;
 
-    public RaceInsightsController(GenerateRaceInsightsService generateRaceInsightsService) {
-        this.generateRaceInsightsService = generateRaceInsightsService;
+    public RaceInsightsController(GenerateRaceInsightsUseCase generateRaceInsightsUseCase) {
+        this.generateRaceInsightsUseCase = generateRaceInsightsUseCase;
     }
 
     @GetMapping("/{raceId}/insights")
     public ResponseEntity<RaceInsightResponseDto> getRaceInsights(@PathVariable Long raceId) {
-        String report = generateRaceInsightsService.execute(raceId);
+        String report = generateRaceInsightsUseCase.execute(raceId);
         if (report == null || report.isEmpty()) {
             return ResponseEntity.status(404)
                     .body(new RaceInsightResponseDto(raceId, "El reporte de la carrera aún se está generando..."));

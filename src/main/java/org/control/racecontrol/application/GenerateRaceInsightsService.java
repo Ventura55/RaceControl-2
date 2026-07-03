@@ -4,6 +4,7 @@ import org.control.racecontrol.domain.model.AiAuditLog;
 import org.control.racecontrol.domain.model.Race;
 import org.control.racecontrol.domain.model.RaceDataSnapshot;
 import org.control.racecontrol.domain.model.RaceResult;
+import org.control.racecontrol.domain.port.input.GenerateRaceInsightsUseCase;
 import org.control.racecontrol.domain.port.output.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 @Service
-public class GenerateRaceInsightsService {
+public class GenerateRaceInsightsService implements GenerateRaceInsightsUseCase {
     private final RaceReportGenerator reportGenerator;
     private final RaceRepository raceRepository;
     private final RaceResultRepository resultRepository;
@@ -28,6 +29,7 @@ public class GenerateRaceInsightsService {
         this.auditRepository = auditRepository;
     }
 
+    @Override
     public String execute(Long raceId) {
         long startTime = System.currentTimeMillis();
         String username = SecurityContextHolder.getContext().getAuthentication() != null

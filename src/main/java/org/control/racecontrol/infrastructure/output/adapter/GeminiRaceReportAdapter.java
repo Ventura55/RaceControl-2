@@ -1,10 +1,13 @@
 package org.control.racecontrol.infrastructure.output.adapter;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.control.racecontrol.infrastructure.input.rest.dto.request.GeminiRequest;
 import org.control.racecontrol.infrastructure.input.rest.dto.response.GeminiResponse;
 import org.springframework.beans.factory.annotation.Value;
 import org.control.racecontrol.domain.model.RaceDataSnapshot;
 import org.control.racecontrol.domain.port.output.RaceReportGenerator;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -31,6 +34,9 @@ public class GeminiRaceReportAdapter implements RaceReportGenerator {
     }
 
     @Override
+    @Cacheable(value = "raceInsights", key = "#data.raceName")
+    @Retry(name = "geminiRetry")
+    @CircuitBreaker(name = "geminiCircuitBreaker", fallbackMethod = "fallbackGenerateSummary")
     public String generateRaceSummary(RaceDataSnapshot data) {
         String prompt = buildPrompt(data);
 
@@ -77,6 +83,19 @@ public class GeminiRaceReportAdapter implements RaceReportGenerator {
                 data.getRaceName(),
                 String.join(", ", data.getPodiumPilots()),
                 data.getPenalties().isEmpty() ? "Ninguna" : String.join("; ", data.getPenalties())
+        );
+    }
+
+    public String fallbackGenerateSummary(RaceDataSnapshot data, Throwable throwable) {
+        System.err.println("🛡️ [Modo Resiliencia Activo] Entrando en fallback para: " + data.getRaceName() + ". Motivo: " + throwable.getMessage());
+
+        return String.format(
+                "Informe de Contingencia Automático - Dirección de Carrera (%s):\n" +
+                        "El sistema de análisis por Inteligencia Artificial no se encuentra disponible momentáneamente. " +
+                        "Resultados preliminares de telemetría: Podio establecido por %s. %s detectadas en el sistema de comisarios.",
+                data.getRaceName(),
+                String.join(", ", data.getPodiumPilots()),
+                data.getPenalties().isEmpty() ? "Sin sanciones comerciales" : "Sanciones registradas y aplicadas"
         );
     }
 
