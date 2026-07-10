@@ -30,7 +30,8 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/races/*/insights").hasAnyRole("MEDIA", "STEWARD")
-                        .anyRequest().permitAll()
+                        .requestMatchers(org.springframework.http.HttpMethod.POST, "/penalty/**").hasRole("STEWARD")
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
                 .addFilterAfter(rateLimitFilter, SecurityAuthenticationFilter.class);

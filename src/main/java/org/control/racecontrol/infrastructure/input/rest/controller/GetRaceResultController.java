@@ -5,6 +5,7 @@ import org.control.racecontrol.domain.model.RaceResult;
 import org.control.racecontrol.domain.model.RaceResultResponse;
 import org.control.racecontrol.infrastructure.input.rest.dto.response.RaceResultResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ public class GetRaceResultController {
     @Autowired
     private GetRaceResultService raceResultService;
 
+    @Cacheable(value = "worldStandings")
     @GetMapping("/drivers")
     public ResponseEntity<List<RaceResultResponseDto>> listRaceResult() {
         List<RaceResultResponse> standings = raceResultService.getAll();

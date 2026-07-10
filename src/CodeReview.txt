@@ -1,0 +1,47 @@
+Mision 1. Se ha encontrado un error en el SecurityConfig al declarar .anyRequest().permitAll()
+al final de la cadena, interpreta que otra ruta que no seeaa laa de los insights es de libre acceso
+ignorando si el usuario necesita token
+pregunta -> La peticion no lleva cabecera Authorization. No requiere Token, ni nada
+El servidor devolvera un 200 OK y procesara la sancion
+ejemplo:
+curl -X POST http://localhost:8080/penalty/1/results/14/penalties \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reason": "Saltarse la chicane y ganar ventaja deliberada",
+    "secondsPenalty": 50
+  }'
+
+Mision 2. El metodo recibe driverNumber directamente desde los parámetros que extrae el controlador de la URL
+El servicio realiza una validación técnica excelente (result.isEmpty()) para comprobar si el piloto corrió esa carrera,
+pero no realiza ninguna validación de pertenencia o propiedad.
+pregunta -> Imagina que el mánager de la escudería Red Bull inicia sesión legítimamente en el sistema y obtiene su token JWT. Su intención es perjudicar a Ferrari.
+Modifica la petición HTTP reemplazando el parámetro del piloto en la URL por el número 16 (Charles Leclerc), pero firmando la petición con su propio token de mánager
+ejemplo:
+curl -X POST http://localhost:8080/penalty/1/results/16/penalties \
+  -H "Authorization: Bearer <TOKEN_VALIDO_MANAGER_RED_BUL>" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "reason": "Exceso de velocidad detectado en el Pit Lane",
+    "secondsPenalty": 10
+  }'
+
+Mision 3. Aqui no hay ningun problema, si envian un finalPosition con 25, el codigo devuelve
+"La posicion final tiene que ser entre 1 y 20"
+pregunta -> las pistas que le damos son que usamos java con spring boot por la estructura del JSON
+que seguimos con una arquitectura de paquetes especifica, que permite adivinar la ruta de otros archivos
+al devolver un 500 le estamos diciendo que nuestro sistema no sabe manejar sus propios errores de validacion, diciendole que busque mas fallos
+ejemplo:
+curl -X POST http://localhost:8080/api/results \
+  -H "Content-Type: application/json" \
+  -d '{
+    "raceId": 1,
+    "driverNumber": 14,
+    "gridPosition": 1,
+    "finalPosition": 25,
+    "status": "FINISHED"
+  }'
+
+Mision 4. Los erros que he tenido ha sido el uso intensivo de logs en el metodo auxiliar calculePoints y ordenamiento tardio con Streams
+pregunta -> Si un scraper automatizado nos bombardea, la aplicacion sufrira un DoS por agotamiento de recursos fisicos
+ejemplo:
+ab -n 10000 -c 100 http://localhost:8080/get/result/drivers

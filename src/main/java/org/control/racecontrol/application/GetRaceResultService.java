@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetRaceResultService  implements GetRaceResultUseCase {
+public class    GetRaceResultService  implements GetRaceResultUseCase {
     private static final Logger log = LoggerFactory.getLogger(GetRaceResultService.class);
 
     private RaceResultRepository resultRepository;
@@ -59,11 +59,9 @@ public class GetRaceResultService  implements GetRaceResultUseCase {
         // Si el piloto no ha terminado la carrera o ha quedado en una posicion
         // mayor a 10 obtiene 0 puntos
         if (result.getStatus() != RaceResult.Status.FINISHED || result.getFinalPosition() > 10) {
-            log.info("Se devuelve 0 puntos por la posicion");
             return 0;
         }
 
-        log.debug("calcumalos el valor de la posicion");
         // En caso de que el piloto haya quedado top 10 se le da los puntos correspondientes
         int points = switch (result.getFinalPosition()) {
             case 1 -> 25;
@@ -81,11 +79,9 @@ public class GetRaceResultService  implements GetRaceResultUseCase {
 
         // Si el piloto ha tenido la ultima vuelta rapida se le suma 1
         if (result.isFastestLap()) {
-            log.debug("Ha tenido vuelta rapida se le suma 1 punto");
             points++;
         }
 
-        log.info("Se devuelve los puntos calculados");
         return points;
     }
 }
