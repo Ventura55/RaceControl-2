@@ -8,6 +8,11 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConfigurationService {
 
+    @Bean
+    public UserRepository userRepository() {
+        return username -> java.util.Optional.of(1L); // Asigna por defecto el ID de equipo 1
+    }
+
     // Con esto contruye los servicios de la aplicacion
     @Bean
     public CreateDriverService createDriverService(DriverRepository driverRepository) {
@@ -15,8 +20,8 @@ public class ConfigurationService {
     }
 
     @Bean
-    public CreatePenaltyService createPenaltyService(PenaltyRepository penaltyRepository, RaceResultRepository raceResultRepository, RaceEventPublisher raceEventPublisher) {
-        return new CreatePenaltyService(penaltyRepository, raceResultRepository, raceEventPublisher);
+    public CreatePenaltyService createPenaltyService(PenaltyRepository penaltyRepository, RaceResultRepository raceResultRepository, RaceEventPublisher raceEventPublisher, DriverRepository driverRepository, UserRepository userRepository) {
+        return new CreatePenaltyService(penaltyRepository, raceResultRepository, raceEventPublisher, driverRepository, userRepository);
     }
 
     @Bean
