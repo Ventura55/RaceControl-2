@@ -1,0 +1,120 @@
+:root {
+  --fia-red: #e10600;
+  --fia-dark: #15151e;
+  --fia-card: #1f1f27;
+  --fia-border: #38383f;
+  --text-main: #ffffff;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fia-dark);
+  color: var(--text-main);
+  font-family: 'Titillium Web', 'Segoe UI', sans-serif;
+}
+
+.fia-dashboard {
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.fia-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 3px solid var(--fia-red);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.logo-badge {
+  background: var(--fia-red);
+  color: white;
+  font-weight: 900;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  border-radius: 4px;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.card {
+  background: var(--fia-card);
+  border: 1px solid var(--fia-border);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.fia-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+.fia-table th, .fia-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--fia-border);
+}
+
+.fia-table th {
+  color: var(--fia-red);
+  text-transform: uppercase;
+}
+
+.pos-cell { font-weight: bold; width: 50px; }
+.points-cell { font-weight: bold; color: #00e676; }
+
+.fia-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+input, textarea {
+  background: #121218;
+  border: 1px solid var(--fia-border);
+  color: white;
+  padding: 0.6rem;
+  border-radius: 4px;
+}
+
+.btn {
+  padding: 0.75rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.btn-danger { background: var(--fia-red); color: white; }
+.btn-ai { background: #6200ea; color: white; }
+
+.ai-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ai-output {
+  background: #0d0d12;
+  padding: 1rem;
+  border-radius: 4px;
+  border-left: 4px solid #6200ea;
+  white-space: pre-wrap;
+  margin-top: 1rem;
+}
